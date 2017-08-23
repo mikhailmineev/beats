@@ -1,0 +1,7 @@
+#Maven compiled files
+/target/
+
+#Eclipse metadata
+/.settings/
+/.classpath
+/.project
