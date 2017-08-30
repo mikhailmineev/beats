@@ -8,16 +8,16 @@ public interface BeatModel {
 
 	void off();
 
-	void setBpm(int bpm);
+	void setBPM(int bpm);
 
-	int getBpm();
+	int getBPM();
 
 	void registerObserver(BeatObserver o);
 
 	void deregisterObserver(BeatObserver o);
 
-	void registerObserver(BpmObserver o);
+	void registerObserver(BPMObserver o);
 
-	void deregisterObserver(BpmObserver o);
+	void deregisterObserver(BPMObserver o);
 
 }

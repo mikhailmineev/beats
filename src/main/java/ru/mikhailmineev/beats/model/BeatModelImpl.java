@@ -14,7 +14,7 @@ import javax.sound.midi.Track;
 
 public class BeatModelImpl implements BeatModel, MetaEventListener {
 
-	private static final int DEFAULT_BPM = 90;
+	private static final int DEFAULT_BPM = 1;
 
 	Sequencer sequencer;
 
@@ -24,32 +24,37 @@ public class BeatModelImpl implements BeatModel, MetaEventListener {
 
 	List<BeatObserver> beatObersvers = new ArrayList<>();
 
-	List<BpmObserver> bpmObersvers = new ArrayList<>();
+	List<BPMObserver> bpmObersvers = new ArrayList<>();
 
 	int bpm = DEFAULT_BPM;
 
-	public void initialize() {
+	@Override
+    public void initialize() {
 		setUpMidi();
 		buildTrackAndStart();
 	}
 
-	public void on() {
+	@Override
+    public void on() {
 		sequencer.start();
-		setBpm(DEFAULT_BPM);
+		setBPM(DEFAULT_BPM);
 	}
 
-	public void off() {
-		setBpm(0);
+	@Override
+    public void off() {
+		setBPM(0);
 		sequencer.stop();
 	}
 
-	public void setBpm(int bpm) {
+	@Override
+    public void setBPM(int bpm) {
 		this.bpm = bpm;
-		sequencer.setTempoInBPM(getBpm());
+		sequencer.setTempoInBPM(getBPM());
 		notifyBpmObservers();
 	}
 
-	public int getBpm() {
+	@Override
+    public int getBPM() {
 		return bpm;
 	}
 
@@ -57,12 +62,14 @@ public class BeatModelImpl implements BeatModel, MetaEventListener {
 		notifyBeatObservers();
 	}
 
-	public void registerObserver(BeatObserver o) {
+	@Override
+    public void registerObserver(BeatObserver o) {
 		beatObersvers.add(o);
 
 	}
 
-	public void deregisterObserver(BeatObserver o) {
+	@Override
+    public void deregisterObserver(BeatObserver o) {
 		beatObersvers.remove(o);
 
 	}
@@ -73,19 +80,21 @@ public class BeatModelImpl implements BeatModel, MetaEventListener {
 		}
 	}
 
-	public void registerObserver(BpmObserver o) {
+	@Override
+    public void registerObserver(BPMObserver o) {
 		bpmObersvers.add(o);
 
 	}
 
-	public void deregisterObserver(BpmObserver o) {
+	@Override
+    public void deregisterObserver(BPMObserver o) {
 		bpmObersvers.remove(o);
 
 	}
 
 	public void notifyBpmObservers() {
-		for (BpmObserver o : bpmObersvers) {
-			o.updateBpm();
+		for (BPMObserver o : bpmObersvers) {
+			o.updateBPM();
 		}
 	}
 
@@ -94,7 +103,7 @@ public class BeatModelImpl implements BeatModel, MetaEventListener {
 		if (meta.getType() == 47) {
 			beatEvent();
 			sequencer.start();
-			setBpm(getBpm());
+			setBPM(getBPM());
 		}
 	}
 
@@ -105,7 +114,7 @@ public class BeatModelImpl implements BeatModel, MetaEventListener {
 			sequencer.addMetaEventListener(this);
 			sequence = new Sequence(Sequence.PPQ, 4);
 			track = sequence.createTrack();
-			sequencer.setTempoInBPM(getBpm());
+			sequencer.setTempoInBPM(getBPM());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
