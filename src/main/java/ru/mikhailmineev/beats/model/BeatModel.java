@@ -14,10 +14,6 @@ public interface BeatModel {
 
 	void registerObserver(BeatObserver o);
 
-	void deregisterObserver(BeatObserver o);
-
 	void registerObserver(BPMObserver o);
-
-	void deregisterObserver(BPMObserver o);
 
 }
